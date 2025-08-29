@@ -1,0 +1,5 @@
+print("Hola, para calcular el área de un rectángulo, por favor dime primero la medida de la Base.")
+base = float(input("Base: "))
+print("Ahora para continuar dime la Altura.")
+altura = float(input("Altura: "))
+print(f"El área de tu rectángulo es de: {base * altura}.")

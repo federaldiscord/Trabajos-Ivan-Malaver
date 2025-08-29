@@ -1,0 +1,5 @@
+print("Para continuar, dime el primer dígito a sumar.")
+n1 = float(input("Primer número: "))
+print("Digita el segundo número.")
+n2 = float(input("Segundo número: "))
+print(f"resultado: {n1 + n2}")
