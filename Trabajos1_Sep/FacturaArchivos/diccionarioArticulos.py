@@ -3,5 +3,6 @@ articulos = {
     "Pan": 2.00,
     "Leche": 1.20,
     "Huevos": 2.50,
-    "Queso": 3.80
+    "Queso": 3.80,
+    "SixPack": 5.00
 }
