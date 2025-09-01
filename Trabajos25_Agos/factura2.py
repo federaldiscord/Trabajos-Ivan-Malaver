@@ -10,7 +10,6 @@ print("*----------------*")
 print("Factura:")
 print("Producto  | Precio")
 
-
 num_productos = int(input("¿Cuántos productos va a llevar? (máx. {}): ".format(len(productos))))
 while num_productos > len(productos) or num_productos < 1:
 	num_productos = int(input("Por favor ingrese un número válido (1-{}): ".format(len(productos))))
