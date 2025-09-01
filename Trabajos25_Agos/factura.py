@@ -10,7 +10,7 @@ print("*----------------*")
 print("Factura:")
 print("Producto  | Precio")
 for i in range(len(productos)):
-    print(productos[i], " | ", precios[i])
+    print(f"{productos[i]}  |  {precios[i]}")
 
 print("*----------------*")
 
