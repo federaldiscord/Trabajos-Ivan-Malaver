@@ -10,13 +10,12 @@ from tuplaArticulos import obtener_Articulos
 
 iva = 0.19
 
-# Tomar nombre del usuario
 nombre = input("Ingrese su nombre: ")
 
-# Obtener tupla de artículos
+
 tupla_articulos = obtener_Articulos(articulos)
 
-# Selección de productos
+
 print("Productos disponibles:")
 for i, (prod, precio) in enumerate(tupla_articulos, 1):
 	print(f"{i}. {prod} - ${precio}")
