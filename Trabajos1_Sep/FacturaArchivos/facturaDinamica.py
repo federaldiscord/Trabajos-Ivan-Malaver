@@ -25,12 +25,12 @@ indices = [int(x.strip()) for x in seleccion.split(",")]
 
 productos = []
 precios = []
-for idx in indices:
+for indx in indices:
 	prod, precio = tupla_articulos[idx - 1]
 	productos.append(prod)
 	precios.append(precio)
 
-# Factura
+
 print("*----------------*")
 print("MiniMarket Carry")
 print("Carrera 7 # 10-15 Madrid Cund.")
