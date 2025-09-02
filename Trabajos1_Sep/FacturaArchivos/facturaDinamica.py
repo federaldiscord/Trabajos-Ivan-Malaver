@@ -26,7 +26,7 @@ indices = [int(x.strip()) for x in seleccion.split(",")]
 productos = []
 precios = []
 for indx in indices:
-	prod, precio = tupla_articulos[idx - 1]
+	prod, precio = tupla_articulos[indx - 1]
 	productos.append(prod)
 	precios.append(precio)
 
