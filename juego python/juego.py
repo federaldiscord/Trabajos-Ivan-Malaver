@@ -1,6 +1,6 @@
 from diccionarios import personajes, armaduras
 from listas import opci_personaje, opci_armadura
-from backend import ascii_personaje
+from funciones import ascii_personaje
 
 print("Bienvenido al combate por rondas orientado en RPG! \n Recuerda que cada ronda puedes cambiar de personaje y armadura.")
 print("Elige tu personaje según quieras luchar esta ronda:")
