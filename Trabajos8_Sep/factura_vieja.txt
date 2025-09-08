@@ -1,0 +1,12 @@
+Factura de Compra
+=================
+Steban C
+Productos:
+Manzana
+2.00
+Arveja
+3.00
+=================
+Subtotal: 5.00
+IVA: 19%
+Total: 5.95
