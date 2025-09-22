@@ -1,0 +1,5 @@
+#Ignorar la carpeta .vscode
+.vscode/
+#Ignorar archivos de configuración de entorno
+.env
+.env.local
