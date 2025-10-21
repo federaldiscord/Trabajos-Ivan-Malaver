@@ -1,5 +1,0 @@
-Hacer con los conocimientos previos:
-
-**Desde python** hacer una Base de Datos,
-creación de una tabla, inserción de datos,
-todo esto, destinado para el proyecto.
