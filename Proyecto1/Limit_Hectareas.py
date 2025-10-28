@@ -5,6 +5,6 @@ if hectareas <= 0:
 elif hectareas > 100:
         print(f"Parece que las hectáreas superan el valor límite (100), teniendo un total de: {hectareas}")
 elif hectareas == 100: 
-    print(f"Las hectáreas están al límite, hay un total de: {hectareas}")
+        print(f"Las hectáreas están al límite, hay un total de: {hectareas}")
 else:
-    print(f"Las hectáreas están dentro del límite permitido, teniendo un total de: {hectareas}")
+        print(f"Las hectáreas están dentro del límite permitido, teniendo un total de: {hectareas}")
