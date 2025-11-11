@@ -1,0 +1,52 @@
+Ingeniero: Michaell
+Contratador: Steban C
+
+Conversación:
+
+¿Cuál es su objetivo de la aplicación?
+R: Ventas digitales para mi local de comidas.
+
+¿Qué quieres que se vea en ella?
+R: En la primera página quiero una recomendación aleatoria del menú. En lo demás que sea útil y llamativa para que los clientes puedan escoger su comida a gusto.
+
+¿Qué funcionalidades necesita sí o sí?
+R: Que los usuarios se puedan registrar e ingresar, que hayan puntos por compra y que luego estos puedan ser redimibles por algún producto, que yo como dueño pueda controlar el inventario, crear, editar, ocultar o eliminar lo que se presenta en el menú.
+
+¿Quiere que sea una app web para navegador de PC, móvil o responsive?
+R: Responsive
+
+¿Tiene algún estilo o ejemplo de app que le guste?
+R: No, completamente original y no tengo ningún tipo de plantilla.
+
+¿Necesitará registro o inicio de sesión para los usuarios?
+R: Sí
+
+¿Qué tipo de información se manejará en la web?
+R: Se manejará imágenes, los usuarios, productos, todo lo que tenga que ver.
+
+
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Ingeniero: Steban C
+Contratador: Michaell
+
+
+¿Qué datos debe guardar la página? (Ejem: Los usuarios, detalles de algún producto...)
+
+R= debe guardar información de los usuarios y registro de los productos vendidos
+
+¿Propósito de la página? (Ejem: Televentas, blog...)
+
+R=  blog 
+
+¿Tiene alguna idea de cómo se debería ver la página? (Ejem: Diseño, estilos, temas)
+
+R= colores blanco azul con estilos comunes de  cualquier pagina 
+
+¿Quiere que sea una página para varios tipos de dispositivos o hay uno en específico?
+
+R= si para varios dispositivos
+
+Especifique si necesita algo más:
+| no
+| 
