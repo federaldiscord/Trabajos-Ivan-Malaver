@@ -1,0 +1,1 @@
+const var1 = "Q' hubo socio"
