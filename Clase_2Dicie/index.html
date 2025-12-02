@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AGENDA</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1077/1077077.png" />
+</head>
+
+<body>
+    <header>
+        <h1>Agenda Virtual</h1>
+        <h2>Gestor de Contactos virtual, fácil y rápido</h2>
+    </header>
+
+    <main>
+        <section class="controls">
+            <div class="toolbar">
+                <div class="left">
+                    <button id="btnAdd" class="btn primary">Agregar contacto</button>
+                    <button id="btnClearAll" class="btn">Borrar todo</button>
+                </div>
+
+                <div class="right">
+                    <input id="searchInput" class="search" type="search" placeholder="Buscar por nombre o email..."
+                        aria-label="Buscar contactos" />
+                    <button id="btnExport" class="btn">Exportar JSON</button>
+                    <button id="btnImport" class="btn">Importar JSON</button>
+                    <input type="file" id="fileImport" accept="application/json" style="display:none" />
+                </div>
+            </div>
+        </section>
+
+        <section>
+            <table id="mainTable" class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Email</th>
+                        <th>Teléfono</th>
+                        <th>Creado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- contenido dinámico -->
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <!-- Modal -->
+    <div id="modal" class="modal" aria-hidden="true">
+        <div class="modal-dialog">
+            <header class="modal-header">
+                <h2 id="modalTitle">Nuevo contacto</h2>
+                <button id="modalClose" class="btn close">✕</button>
+            </header>
+
+            <div class="modal-body">
+                <form id="contactForm" novalidate>
+                    <input type="hidden" id="contactIndex" />
+
+                    <label>Nombre
+                        <input id="name" type="text" required />
+                        <div class="error" id="errName" aria-live="polite"></div>
+                    </label>
+
+                    <label>Email
+                        <input id="email" type="email" required />
+                        <div class="error" id="errEmail" aria-live="polite"></div>
+                    </label>
+
+                    <label>Teléfono
+                        <input id="phone" type="tel" />
+                        <div class="error" id="errPhone" aria-live="polite"></div>
+                    </label>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary">Guardar</button>
+                        <button type="button" id="btnCancel" class="btn">Cancelar</button>
+                    </div>
+                    <div class="form-message" id="formMessage" aria-live="polite"></div>
+                </form>
+
+                <!-- En la parte inferior del modal mostramos una tabla con los registros actuales -->
+                <section class="modal-table-section">
+                    <h3>Contactos actuales</h3>
+                    <table id="modalTable" class="table small">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Email</th>
+                                <th>Creado</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Dinámico -->
+                        </tbody>
+                    </table>
+                </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+
+</html>

@@ -1,0 +1,209 @@
+/* Reset pequeño */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 16px;
+    background: #f7f9fc;
+    color: #222
+}
+
+header {
+    margin-bottom: 12px
+}
+
+h1 {
+    font-size: 20px;
+    margin: 0;
+    text-align: center;
+}
+
+h2 {
+    font-size: 16px;
+    margin: 4px 0 0 0;
+    color: #555;
+    text-align: center;
+}
+
+.controls {
+    margin-bottom: 12px;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.toolbar {
+    display: flex;
+    width: 100%;
+    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.toolbar .left {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.toolbar .right {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.search {
+    padding: 8px 10px;
+    border: 1px solid #d6dde6;
+    border-radius: 6px;
+    min-width: 220px;
+}
+
+.btn {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+}
+
+.btn:hover {
+    filter: brightness(.98);
+}
+
+.btn.primary {
+    background: #2b8aef;
+    color: #fff;
+    border-color: #546070;
+}
+
+.btn.close {
+    background: transparent;
+    border: 0;
+    font-size: 18px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.table th,
+.table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #eef2f6;
+    text-align: left;
+}
+
+.table thead {
+    background: #f2f6fb
+}
+
+.table .actions {
+    display: flex;
+    gap: 8px
+}
+
+/* Modal */
+.modal {
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: rgba(12, 20, 40, 0.45);
+    padding: 20px
+}
+
+.modal[aria-hidden="false"] {
+    display: flex
+}
+
+.modal-dialog {
+    max-width: 680px;
+    width: 100%;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #eef2f6
+}
+
+.modal-body {
+    padding: 16px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px
+}
+
+form label {
+    display: block;
+    font-size: 13px;
+    margin-bottom: 6px
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="tel"] {
+    width: 100%;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #d6dde6
+}
+
+.form-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 8px
+}
+
+.modal-table-section h3 {
+    margin: 0 0 8px 0;
+    font-size: 14px
+}
+
+.table.small th,
+.table.small td {
+    padding: 6px 8px;
+    font-size: 13px
+}
+
+.error {
+    color: #b52323;
+    font-size: 13px;
+    margin-top: 4px
+}
+
+.form-message {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #2b8aef
+}
+
+.note {
+    font-size: 12px;
+    color: #666
+}
+
+/* Responsivo */
+@media (max-width:600px) {
+    .modal-dialog {
+        max-width: 100%
+    }
+
+    .form-actions {
+        flex-direction: column
+    }
+}
