@@ -19,7 +19,8 @@
         <section class="controls">
             <div class="toolbar">
                 <div class="left">
-                    <button id="btnAdd" class="btn primary">Agregar contacto</button>
+                    <!-- Usaremos el hash #add para abrir el modal de crear -->
+                    <a href="#add" id="btnAdd" class="btn primary">Agregar contacto</a>
                     <button id="btnClearAll" class="btn">Borrar todo</button>
                 </div>
 
@@ -57,12 +58,14 @@
         <div class="modal-dialog">
             <header class="modal-header">
                 <h2 id="modalTitle">Nuevo contacto</h2>
-                <button id="modalClose" class="btn close">✕</button>
+                <!-- Usaremos el hash #list para cerrar el modal y volver a la vista principal -->
+                <a href="#list" id="modalClose" class="btn close">✕</a>
             </header>
 
             <div class="modal-body">
                 <form id="contactForm" novalidate>
-                    <input type="hidden" id="contactIndex" />
+                    <!-- Ya no necesitamos el index ya que el id lo obtenemos de la URL para editar -->
+                    <input type="hidden" id="contactId" />
 
                     <label>Nombre
                         <input id="name" type="text" required />
@@ -81,7 +84,8 @@
 
                     <div class="form-actions">
                         <button type="submit" class="btn primary">Guardar</button>
-                        <button type="button" id="btnCancel" class="btn">Cancelar</button>
+                        <!-- Usaremos el hash #list para cancelar -->
+                        <a href="#list" id="btnCancel" class="btn">Cancelar</a>
                     </div>
                     <div class="form-message" id="formMessage" aria-live="polite"></div>
                 </form>
@@ -107,7 +111,12 @@
         </div>
     </div>
 
-    <script src="app.js" defer></script>
+    <!-- Carga de scripts: App principal, luego los módulos CRUD -->
+    <script src="App.js" defer></script>
+    <script src="Read.js" defer></script>
+    <script src="Create.js" defer></script>
+    <script src="Update.js" defer></script>
+    <script src="Delete.js" defer></script>
 </body>
 
 </html>

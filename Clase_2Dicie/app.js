@@ -1,5 +1,6 @@
-// app.js - CRUD con búsqueda, export/import, validación y modal
+// app.js - Lógica Principal, Gestión de Estado y Router
 
+// Clase Contacto para mantener la estructura de datos
 class Contact {
     constructor(id, name, email, phone, createdAt) {
         this.id = id;
@@ -16,24 +17,15 @@ class App {
         this.contacts = this.load() || [];
         this.nextId = this.calculateNextId();
 
-        // DOM
+        // Referencias al DOM
         this.mainTableBody = document.querySelector('#mainTable tbody');
         this.modal = document.getElementById('modal');
         this.modalTitle = document.getElementById('modalTitle');
         this.modalTableBody = document.querySelector('#modalTable tbody');
-
-        this.btnAdd = document.getElementById('btnAdd');
-        this.modalClose = document.getElementById('modalClose');
-        this.btnCancel = document.getElementById('btnCancel');
-        this.btnExport = document.getElementById('btnExport');
-        this.btnImport = document.getElementById('btnImport');
-        this.fileImport = document.getElementById('fileImport');
-        this.btnClearAll = document.getElementById('btnClearAll');
-
         this.searchInput = document.getElementById('searchInput');
 
         this.form = document.getElementById('contactForm');
-        this.inputIndex = document.getElementById('contactIndex');
+        this.inputId = document.getElementById('contactId'); // Usamos ID en lugar de index
         this.inputName = document.getElementById('name');
         this.inputEmail = document.getElementById('email');
         this.inputPhone = document.getElementById('phone');
@@ -43,20 +35,24 @@ class App {
         this.errPhone = document.getElementById('errPhone');
         this.formMessage = document.getElementById('formMessage');
 
-        // eventos
-        this.btnAdd.addEventListener('click', () => this.openModal('add'));
-        this.modalClose.addEventListener('click', () => this.closeModal());
-        this.btnCancel.addEventListener('click', () => this.closeModal());
-        this.form.addEventListener('submit', (e) => this.onSubmit(e));
-        this.searchInput.addEventListener('input', () => this.renderMainTable());
-        this.btnExport.addEventListener('click', () => this.exportJSON());
-        this.btnImport.addEventListener('click', () => this.fileImport.click());
-        this.fileImport.addEventListener('change', (e) => this.importJSON(e));
-        this.btnClearAll.addEventListener('click', () => this.clearAll());
+        // Eventos generales
+        document.getElementById('searchInput').addEventListener('input', () => this.handleSearch());
+        document.getElementById('btnExport').addEventListener('click', () => this.exportJSON());
+        document.getElementById('btnImport').addEventListener('click', () => document.getElementById('fileImport').click());
+        document.getElementById('fileImport').addEventListener('change', (e) => this.importJSON(e));
+        document.getElementById('btnClearAll').addEventListener('click', () => this.clearAll());
 
-        // render inicial
+        this.form.addEventListener('submit', (e) => this.onSubmit(e));
+        
+        // Manejo de la URL para el routing
+        window.addEventListener('hashchange', () => this.router());
+        document.addEventListener('DOMContentLoaded', () => this.router());
+
+        // Inicializar la tabla y las funciones que vienen de otros archivos
         this.renderMainTable();
     }
+
+    // --- UTILS ---
 
     calculateNextId() {
         if (!this.contacts || this.contacts.length === 0) return 1;
@@ -81,83 +77,68 @@ class App {
     formatDate(iso) {
         try { const d = new Date(iso); return d.toLocaleString(); } catch (e) { return iso }
     }
+    
+    // Función de saneamiento de HTML
+    escapeHtml(s) {
+        if (!s && s !== 0) return '';
+        return String(s)
+            .replaceAll('&', '&amp;')
+            .replaceAll('<', '&lt;')
+            .replaceAll('>', '&gt;')
+            .replaceAll('"', '&quot;')
+            .replaceAll("'", '&#39;');
+    }
 
-    renderMainTable() {
-        const term = (this.searchInput?.value || '').toLowerCase().trim();
-        this.mainTableBody.innerHTML = '';
+    // --- MODAL Y ROUTING (URL) ---
 
-        const filtered = this.contacts.filter(c => {
-            if (!term) return true;
-            return (c.name || '').toLowerCase().includes(term) || (c.email || '').toLowerCase().includes(term);
-        });
-
-        if (filtered.length === 0) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `<td colspan="6" style="text-align:center">No hay contactos</td>`;
-            this.mainTableBody.appendChild(tr);
+    router() {
+        const hash = window.location.hash.substring(1); // Obtiene la parte después de #
+        this.closeModal(); // Cerrar por defecto
+        
+        // Patrón para /add
+        if (hash === 'add') {
+            this.openModal('add');
         }
-
-        filtered.forEach((c, idx) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-        <td>${escapeHtml(c.id)}</td>
-        <td>${escapeHtml(c.name)}</td>
-        <td>${escapeHtml(c.email)}</td>
-        <td>${escapeHtml(c.phone || '')}</td>
-        <td>${escapeHtml(this.formatDate(c.createdAt))}</td>
-        <td class="actions">
-          <button class="btn" data-action="edit" data-index="${this.contacts.indexOf(c)}">Editar</button>
-          <button class="btn" data-action="delete" data-index="${this.contacts.indexOf(c)}">Eliminar</button>
-        </td>
-      `;
-            this.mainTableBody.appendChild(tr);
-        });
-
-        // delegación de eventos en la tabla
-        this.mainTableBody.querySelectorAll('button').forEach(btn => {
-            const action = btn.dataset.action;
-            const index = Number(btn.dataset.index);
-            if (action === 'edit') btn.addEventListener('click', () => this.openModal('edit', index));
-            if (action === 'delete') btn.addEventListener('click', () => this.deleteContact(index));
-        });
+        
+        // Patrón para /edit/ID
+        const editMatch = hash.match(/^edit\/(\d+)$/);
+        if (editMatch) {
+            const contactId = Number(editMatch[1]);
+            this.openModal('edit', contactId);
+        }
+        
+        // Cualquier otro hash (o hash vacío) se comporta como /list (cierra modal)
+        if (hash === 'list') {
+            window.location.hash = ''; // Limpiar el hash para dejar la URL limpia
+        }
     }
 
-    renderModalTable() {
-        // muestra una tabla dentro del modal con los contactos actuales
-        this.modalTableBody.innerHTML = '';
-        this.contacts.forEach((c) => {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
-        <td>${escapeHtml(c.id)}</td>
-        <td>${escapeHtml(c.name)}</td>
-        <td>${escapeHtml(c.email)}</td>
-        <td>${escapeHtml(this.formatDate(c.createdAt))}</td>
-      `;
-            this.modalTableBody.appendChild(tr);
-        });
-    }
-
-    openModal(mode = 'add', index = null) {
+    openModal(mode = 'add', contactId = null) {
         this.clearFormErrors();
         this.modal.setAttribute('aria-hidden', 'false');
         this.modalTitle.textContent = mode === 'add' ? 'Nuevo contacto' : 'Editar contacto';
 
         if (mode === 'add') {
-            this.inputIndex.value = '';
+            this.inputId.value = '';
             this.inputName.value = '';
             this.inputEmail.value = '';
             this.inputPhone.value = '';
             this.formMessage.textContent = '';
-        } else if (mode === 'edit' && index !== null) {
-            const c = this.contacts[index];
-            this.inputIndex.value = index;
-            this.inputName.value = c.name;
-            this.inputEmail.value = c.email;
-            this.inputPhone.value = c.phone || '';
-            this.formMessage.textContent = '';
+        } else if (mode === 'edit' && contactId !== null) {
+            const contact = this.contacts.find(c => Number(c.id) === contactId);
+            if (contact) {
+                this.inputId.value = contactId;
+                this.inputName.value = contact.name;
+                this.inputEmail.value = contact.email;
+                this.inputPhone.value = contact.phone || '';
+                this.formMessage.textContent = '';
+            } else {
+                // Si no encuentra el ID, vuelve a la lista
+                window.location.hash = 'list';
+                return;
+            }
         }
 
-        // Al abrir el modal siempre mostramos la(s) tabla(s)
         this.renderModalTable();
         this.inputName.focus();
     }
@@ -165,7 +146,9 @@ class App {
     closeModal() {
         this.modal.setAttribute('aria-hidden', 'true');
     }
-
+    
+    // --- VALIDACIÓN Y FORM SUBMIT ---
+    
     clearFormErrors() {
         this.errName.textContent = '';
         this.errEmail.textContent = '';
@@ -184,44 +167,23 @@ class App {
 
     onSubmit(e) {
         e.preventDefault();
-        const idx = this.inputIndex.value;
+        const contactId = this.inputId.value; // Será vacío para crear, o el ID para editar
         const name = this.inputName.value.trim();
         const email = this.inputEmail.value.trim();
         const phone = this.inputPhone.value.trim();
 
         if (!this.validateForm(name, email)) return;
-
-        if (idx === '') {
-            // create
-            const contact = new Contact(this.nextId++, name, email, phone, new Date().toISOString());
-            this.contacts.push(contact);
+        
+        if (contactId === '') {
+            // Llama a la función de Create.js
+            this.createContact(name, email, phone);
         } else {
-            // update
-            const existing = this.contacts[Number(idx)];
-            existing.name = name;
-            existing.email = email;
-            existing.phone = phone;
+            // Llama a la función de Update.js
+            this.updateContact(Number(contactId), name, email, phone);
         }
-
-        this.save();
-        this.renderMainTable();
-        this.closeModal();
     }
 
-    deleteContact(index) {
-        if (!confirm('¿Eliminar este contacto?')) return;
-        this.contacts.splice(index, 1);
-        this.save();
-        this.renderMainTable();
-    }
-
-    clearAll() {
-        if (!confirm('¿Borrar todos los contactos? Esta acción no se puede deshacer.')) return;
-        this.contacts = [];
-        this.nextId = 1;
-        this.save();
-        this.renderMainTable();
-    }
+    // --- MÉTODOS DE EXPORTACIÓN/IMPORTACIÓN ---
 
     exportJSON() {
         try {
@@ -235,7 +197,7 @@ class App {
             a.click();
             a.remove();
             URL.revokeObjectURL(url);
-        } catch (e) { alert('Error exportando: ' + e); }
+        } catch (e) { console.error('Error exportando:', e); }
     }
 
     importJSON(e) {
@@ -251,26 +213,17 @@ class App {
                 this.nextId = this.calculateNextId();
                 this.save();
                 this.renderMainTable();
-                alert('Importación completada');
-            } catch (err) { alert('Error importando JSON: ' + err.message); }
+                this.formMessage.textContent = 'Importación completada';
+                setTimeout(() => this.formMessage.textContent = '', 3000);
+            } catch (err) { this.formMessage.textContent = 'Error importando JSON: ' + err.message; }
         };
         reader.readAsText(file);
-        // limpiar el input para permitir re-importar el mismo archivo si se desea
-        e.target.value = '';
+        e.target.value = ''; // limpiar input
     }
-}
-
-function escapeHtml(s) {
-    if (!s && s !== 0) return '';
-    return String(s)
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;')
-        .replaceAll('"', '&quot;')
-        .replaceAll("'", '&#39;');
 }
 
 // Inicializar cuando el DOM esté listo
 document.addEventListener('DOMContentLoaded', () => {
+    // Exponer la instancia de App globalmente
     window.app = new App();
 });
