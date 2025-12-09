@@ -1,5 +1,3 @@
-// app.js - Lógica Principal, Gestión de Estado y Router
-
 // Clase Contacto para mantener la estructura de datos
 class Contact {
     constructor(id, name, email, phone, createdAt) {
